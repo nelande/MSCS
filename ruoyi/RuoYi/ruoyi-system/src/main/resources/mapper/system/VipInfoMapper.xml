@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.VipInfoMapper">
+    
+    <resultMap type="VipInfo" id="VipInfoResult">
+        <result property="vipId"    column="vip_id"    />
+        <result property="name"    column="name"    />
+    </resultMap>
+
+    <sql id="selectVipInfoVo">
+        select vip_id, name from vip_info
+    </sql>
+
+    <select id="selectVipInfoList" parameterType="VipInfo" resultMap="VipInfoResult">
+        <include refid="selectVipInfoVo"/>
+        <where>  
+            <if test="vipId != null "> and vip_id = #{vipId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectVipInfoById" parameterType="Long" resultMap="VipInfoResult">
+        <include refid="selectVipInfoVo"/>
+        where vip_id = #{vipId}
+    </select>
+        
+    <insert id="insertVipInfo" parameterType="VipInfo" useGeneratedKeys="true" keyProperty="vipId">
+        insert into vip_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+         </trim>
+    </insert>
+
+    <update id="updateVipInfo" parameterType="VipInfo">
+        update vip_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+        </trim>
+        where vip_id = #{vipId}
+    </update>
+
+    <delete id="deleteVipInfoById" parameterType="Long">
+        delete from vip_info where vip_id = #{vipId}
+    </delete>
+
+    <delete id="deleteVipInfoByIds" parameterType="String">
+        delete from vip_info where vip_id in 
+        <foreach item="vipId" collection="array" open="(" separator="," close=")">
+            #{vipId}
+        </foreach>
+    </delete>
+
+</mapper>

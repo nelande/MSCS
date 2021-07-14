@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BillMapper">
+    
+    <resultMap type="Bill" id="BillResult">
+        <result property="billId"    column="bill_id"    />
+        <result property="vipId"    column="vip_id"    />
+        <result property="purchaseDate"    column="purchase_date"    />
+    </resultMap>
+
+    <sql id="selectBillVo">
+        select bill_id, vip_id, purchase_date from bill
+    </sql>
+
+    <select id="selectBillList" parameterType="Bill" resultMap="BillResult">
+        <include refid="selectBillVo"/>
+        <where>  
+            <if test="billId != null "> and bill_id = #{billId}</if>
+            <if test="vipId != null "> and vip_id = #{vipId}</if>
+            <if test="purchaseDate != null "> and purchase_date = #{purchaseDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectBillById" parameterType="Long" resultMap="BillResult">
+        <include refid="selectBillVo"/>
+        where bill_id = #{billId}
+    </select>
+        
+    <insert id="insertBill" parameterType="Bill" useGeneratedKeys="true" keyProperty="billId">
+        insert into bill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="vipId != null">vip_id,</if>
+            <if test="purchaseDate != null">purchase_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="vipId != null">#{vipId},</if>
+            <if test="purchaseDate != null">#{purchaseDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBill" parameterType="Bill">
+        update bill
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="vipId != null">vip_id = #{vipId},</if>
+            <if test="purchaseDate != null">purchase_date = #{purchaseDate},</if>
+        </trim>
+        where bill_id = #{billId}
+    </update>
+
+    <delete id="deleteBillById" parameterType="Long">
+        delete from bill where bill_id = #{billId}
+    </delete>
+
+    <delete id="deleteBillByIds" parameterType="String">
+        delete from bill where bill_id in 
+        <foreach item="billId" collection="array" open="(" separator="," close=")">
+            #{billId}
+        </foreach>
+    </delete>
+
+</mapper>
