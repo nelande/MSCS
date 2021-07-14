@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.MemberInfoMapper">
+    
+    <resultMap type="MemberInfo" id="MemberInfoResult">
+        <result property="memberid"    column="memberid"    />
+        <result property="name"    column="name"    />
+        <result property="amount"    column="amount"    />
+    </resultMap>
+
+    <sql id="selectMemberInfoVo">
+        select memberid, name, amount from member_info
+    </sql>
+
+    <select id="selectMemberInfoList" parameterType="MemberInfo" resultMap="MemberInfoResult">
+        <include refid="selectMemberInfoVo"/>
+        <where>
+            <if test="memberid != null "> and memberid = #{memberid}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+        </where>
+    </select>
+    
+    <select id="selectMemberInfoById" parameterType="Long" resultMap="MemberInfoResult">
+        <include refid="selectMemberInfoVo"/>
+        where memberid = #{memberid}
+    </select>
+        
+    <insert id="insertMemberInfo" parameterType="MemberInfo">
+        insert into member_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberid != null">memberid,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="amount != null">amount,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberid != null">#{memberid},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="amount != null">#{amount},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMemberInfo" parameterType="MemberInfo">
+        update member_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="amount != null">amount = #{amount},</if>
+        </trim>
+        where memberid = #{memberid}
+    </update>
+
+    <delete id="deleteMemberInfoById" parameterType="Long">
+        delete from member_info where memberid = #{memberid}
+    </delete>
+
+    <delete id="deleteMemberInfoByIds" parameterType="String">
+        delete from member_info where memberid in 
+        <foreach item="memberid" collection="array" open="(" separator="," close=")">
+            #{memberid}
+        </foreach>
+    </delete>
+
+</mapper>

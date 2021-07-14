@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.MemberPurchaseMapper">
+    
+    <resultMap type="MemberPurchase" id="MemberPurchaseResult">
+        <result property="ordernum"    column="ordernum"    />
+        <result property="productnum"    column="productnum"    />
+        <result property="memberid"    column="memberid"    />
+        <result property="orderdate"    column="orderdate"    />
+        <result property="name"    column="name"    />
+    </resultMap>
+
+    <sql id="selectMemberPurchaseVo">
+        select ordernum, productnum, memberid, orderdate, name from member_purchase
+    </sql>
+
+    <select id="selectMemberPurchaseList" parameterType="MemberPurchase" resultMap="MemberPurchaseResult">
+        <include refid="selectMemberPurchaseVo"/>
+        <where>  
+            <if test="memberid != null "> and memberid = #{memberid}</if>
+            <if test="orderdate != null "> and orderdate = #{orderdate}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectMemberPurchaseById" parameterType="Long" resultMap="MemberPurchaseResult">
+        <include refid="selectMemberPurchaseVo"/>
+        where ordernum = #{ordernum}
+    </select>
+        
+    <insert id="insertMemberPurchase" parameterType="MemberPurchase">
+        insert into member_purchase
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ordernum != null">ordernum,</if>
+            <if test="productnum != null">productnum,</if>
+            <if test="memberid != null">memberid,</if>
+            <if test="orderdate != null">orderdate,</if>
+            <if test="name != null and name != ''">name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ordernum != null">#{ordernum},</if>
+            <if test="productnum != null">#{productnum},</if>
+            <if test="memberid != null">#{memberid},</if>
+            <if test="orderdate != null">#{orderdate},</if>
+            <if test="name != null and name != ''">#{name},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMemberPurchase" parameterType="MemberPurchase">
+        update member_purchase
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productnum != null">productnum = #{productnum},</if>
+            <if test="memberid != null">memberid = #{memberid},</if>
+            <if test="orderdate != null">orderdate = #{orderdate},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+        </trim>
+        where ordernum = #{ordernum}
+    </update>
+
+    <delete id="deleteMemberPurchaseById" parameterType="Long">
+        delete from member_purchase where ordernum = #{ordernum}
+    </delete>
+
+    <delete id="deleteMemberPurchaseByIds" parameterType="String">
+        delete from member_purchase where ordernum in 
+        <foreach item="ordernum" collection="array" open="(" separator="," close=")">
+            #{ordernum}
+        </foreach>
+    </delete>
+
+</mapper>

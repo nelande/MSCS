@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.GoodBatchMapper">
+    
+    <resultMap type="GoodBatch" id="GoodBatchResult">
+        <result property="batchId"    column="batch_id"    />
+        <result property="goodBatchName"    column="good_batch_name"    />
+        <result property="batchCode"    column="batch_code"    />
+        <result property="batchAmount"    column="batch_amount"    />
+        <result property="batchPd"    column="batch_pd"    />
+        <result property="batchExp"    column="batch_exp"    />
+    </resultMap>
+
+    <resultMap type="GoodType" id="GoodTypeResult">
+        <result property="goodId"    column="good_id"    />
+        <result property="goodCode"    column="good_code"    />
+        <result property="goodName"    column="good_name"    />
+    </resultMap>
+
+    <sql id="selectGoodTypeVo">
+        select good_id, good_code, good_name from good_type
+    </sql>
+
+    <sql id="selectGoodBatchVo">
+        select batch_id, good_batch_name, batch_code, batch_amount, batch_pd, batch_exp from good_batch
+    </sql>
+
+    <select id="selectGoodBatchList" parameterType="GoodBatch" resultMap="GoodBatchResult">
+        <include refid="selectGoodBatchVo"/>
+        <where>  
+            <if test="goodBatchName != null  and goodBatchName != ''"> and good_batch_name like concat('%', #{goodBatchName}, '%')</if>
+            <if test="batchCode != null  and batchCode != ''"> and batch_code = #{batchCode}</if>
+            <if test="batchAmount != null "> and batch_amount = #{batchAmount}</if>
+            <if test="batchPd != null "> and batch_pd = #{batchPd}</if>
+            <if test="batchExp != null "> and batch_exp = #{batchExp}</if>
+        </where>
+    </select>
+    
+    <select id="selectGoodBatchById" parameterType="Long" resultMap="GoodBatchResult">
+        <include refid="selectGoodBatchVo"/>
+        where batch_id = #{batchId}
+    </select>
+        
+    <insert id="insertGoodBatch" parameterType="GoodBatch" useGeneratedKeys="true" keyProperty="batchId">
+        insert into good_batch
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodBatchName != null and goodBatchName != ''">good_batch_name,</if>
+            <if test="batchCode != null and batchCode != ''">batch_code,</if>
+            <if test="batchAmount != null">batch_amount,</if>
+            <if test="batchPd != null">batch_pd,</if>
+            <if test="batchExp != null">batch_exp,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodBatchName != null and goodBatchName != ''">#{goodBatchName},</if>
+            <if test="batchCode != null and batchCode != ''">#{batchCode},</if>
+            <if test="batchAmount != null">#{batchAmount},</if>
+            <if test="batchPd != null">#{batchPd},</if>
+            <if test="batchExp != null">#{batchExp},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoodBatch" parameterType="GoodBatch">
+        update good_batch
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodBatchName != null and goodBatchName != ''">good_batch_name = #{goodBatchName},</if>
+            <if test="batchCode != null and batchCode != ''">batch_code = #{batchCode},</if>
+            <if test="batchAmount != null">batch_amount = #{batchAmount},</if>
+            <if test="batchPd != null">batch_pd = #{batchPd},</if>
+            <if test="batchExp != null">batch_exp = #{batchExp},</if>
+        </trim>
+        where batch_id = #{batchId}
+    </update>
+
+    <delete id="deleteGoodBatchById" parameterType="Long">
+        delete from good_batch where batch_id = #{batchId}
+    </delete>
+
+    <delete id="deleteGoodBatchByIds" parameterType="String">
+        delete from good_batch where batch_id in 
+        <foreach item="batchId" collection="array" open="(" separator="," close=")">
+            #{batchId}
+        </foreach>
+    </delete>
+
+    <select id="checkGoodBatchNameExist" resultMap="GoodTypeResult" parameterType="String">
+        <include refid="selectGoodTypeVo"/>
+            where good_name = #{goodName} limit 1
+    </select>
+
+</mapper>
