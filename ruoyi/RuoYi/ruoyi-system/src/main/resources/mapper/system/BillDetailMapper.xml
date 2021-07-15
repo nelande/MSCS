@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.BillDetailMapper">
-    
+
     <resultMap type="BillDetail" id="BillDetailResult">
-        <result property="billVirtualId"    column="bill_virtual_id"    />
-        <result property="billId"    column="bill_id"    />
-        <result property="goodName"    column="good_name"    />
-        <result property="goodPrice"    column="good_price"    />
+        <result property="billVirtualId" column="bill_virtual_id"/>
+        <result property="billId" column="bill_id"/>
+        <result property="goodName" column="good_name"/>
+        <result property="goodPrice" column="good_price"/>
     </resultMap>
 
     <sql id="selectBillDetailVo">
@@ -17,31 +17,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectBillDetailList" parameterType="BillDetail" resultMap="BillDetailResult">
         <include refid="selectBillDetailVo"/>
-        <where>  
-            <if test="billVirtualId != null "> and bill_virtual_id = #{billVirtualId}</if>
-            <if test="billId != null "> and bill_id = #{billId}</if>
-            <if test="goodName != null  and goodName != ''"> and good_name like concat('%', #{goodName}, '%')</if>
-            <if test="goodPrice != null "> and good_price = #{goodPrice}</if>
+        <where>
+            <if test="billVirtualId != null ">and bill_virtual_id = #{billVirtualId}</if>
+            <if test="billId != null ">and bill_id = #{billId}</if>
+            <if test="goodName != null  and goodName != ''">and good_name like concat('%', #{goodName}, '%')</if>
+            <if test="goodPrice != null ">and good_price = #{goodPrice}</if>
         </where>
     </select>
-    
+
     <select id="selectBillDetailById" parameterType="Long" resultMap="BillDetailResult">
         <include refid="selectBillDetailVo"/>
         where bill_virtual_id = #{billVirtualId}
     </select>
-        
+
     <insert id="insertBillDetail" parameterType="BillDetail" useGeneratedKeys="true" keyProperty="billVirtualId">
         insert into bill_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="billId != null">bill_id,</if>
             <if test="goodName != null and goodName != ''">good_name,</if>
             <if test="goodPrice != null">good_price,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="billId != null">#{billId},</if>
             <if test="goodName != null and goodName != ''">#{goodName},</if>
             <if test="goodPrice != null">#{goodPrice},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateBillDetail" parameterType="BillDetail">
@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteBillDetailByIds" parameterType="String">
-        delete from bill_detail where bill_virtual_id in 
+        delete from bill_detail where bill_virtual_id in
         <foreach item="billVirtualId" collection="array" open="(" separator="," close=")">
             #{billVirtualId}
         </foreach>

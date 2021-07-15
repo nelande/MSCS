@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+    <th:block th:include="include :: header('数据汇总')" />
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="ibox">
+            <div class="ibox-content">
+                <button>更新数据</button>
+            </div>
+        </div>
+
+        <div class="ibox">
+            <div class="ibox-content">
+
+                <h1>销售统计</h1>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <h5>历史收入</h5>
+                                <h1 class="no-margins" id="total_income">0</h1>
+                                <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>
+                                <small>总收入</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <h5>历史订单</h5>
+                                <h1 class="no-margins" id="total_bill">0</h1>
+                                <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>
+                                <small>总订单</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <h5>历史商品销售数</h5>
+                                <h1 class="no-margins" id="total_good_sold">0</h1>
+                                <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>
+                                <small>总商品销售数</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>饼状图</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <i class="fa fa-wrench"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user">
+                                        <li><a href="#">选项1</a>
+                                        </li>
+                                        <li><a href="#">选项2</a>
+                                        </li>
+                                    </ul>
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content text-center h-200">
+                                <span id="sparkline7"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>饼状图</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <i class="fa fa-wrench"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user">
+                                        <li><a href="#">选项1</a>
+                                        </li>
+                                        <li><a href="#">选项2</a>
+                                        </li>
+                                    </ul>
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="echarts" id="bill-pie-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <br>
+
+        <div class="ibox">
+            <div class="ibox-content">
+
+                <h1>库存情况</h1>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <h5>商品种类总数</h5>
+                                <h1 class="no-margins" id="total_good">0</h1>
+                                <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>
+                                <small>商品种类总数</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>饼状图</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <i class="fa fa-wrench"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user">
+                                        <li><a href="#">选项1</a>
+                                        </li>
+                                        <li><a href="#">选项2</a>
+                                        </li>
+                                    </ul>
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="echarts" id="inventory-pie-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="ibox">
+            <div class="ibox-content">
+
+                <h1>会员情况</h1>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <h5>会员总人数</h5>
+                                <h1 class="no-margins" id="total_vip">0</h1>
+                                <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>
+                                <small>会员总人数</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="ibox">
+            <div class="ibox-content">
+
+                <h1>员工情况</h1>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <h5>员工总人数</h5>
+                                <h1 class="no-margins" id="total_employee">0</h1>
+                                <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>
+                                <small>员工总人数</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>饼状图</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <i class="fa fa-wrench"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user">
+                                        <li><a href="#">选项1</a>
+                                        </li>
+                                        <li><a href="#">选项2</a>
+                                        </li>
+                                    </ul>
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="echarts" id="employees-pie-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: sparkline-js" />
+    <th:block th:include="include :: echarts-js" />
+    <script th:inline="javascript">
+
+
+        $.get("/system/report/getTotalIncome", function (data, status) {
+            $("#total_income").text(data);
+        })
+
+        $.get("/system/report/getTotalBill", function (data, status) {
+            $("#total_bill").text(data);
+        })
+
+        $.get("/system/report/getTotalGoodSold", function (data, status) {
+            $("#total_good_sold").text(data);
+        })
+
+        $.get("/system/report/getTotalGood", function (data, status) {
+            $("#total_good").text(data);
+        })
+
+        $.get("/system/report/getTotalVip", function (data, status) {
+            $("#total_vip").text(data);
+        })
+
+        $.get("/system/report/getTotalEmployee", function (data, status) {
+            $("#total_employee").text(data);
+        })
+
+        $.getJSON("/system/report/getGoodSoldAmount", function (data, status) {
+            var arr = new Array();
+            arr = data;
+            var sold_amounts = new Array(arr.length);
+            var good_name = new Array(arr.length);
+            var i = 0;
+            var j = 0;
+            $.each(arr, function (index1, item1) {
+                $.each(item1, function (index2, item2) {
+                    if (index2 == "amount") {
+                        sold_amounts[i] = item2;
+                        i++;
+                    }
+                    else {
+                        good_name[j] = item2;
+                        j++;
+                    }
+                })
+            })
+
+            $("#sparkline7").sparkline(sold_amounts, {
+                type: 'pie',
+                height: '150px',
+                sliceColors: ['#1ab394', '#b3b3b3', '#e4f0fb', '#17997f']
+            });
+
+            var servicedata = [];
+            for (var i = 0; i < arr.length; i++) {
+                var obj = new Object();
+                obj.name = good_name[i];
+                obj.value = sold_amounts[i];
+                servicedata[i] = obj;
+            }
+
+            var pieChart = echarts.init(document.getElementById("bill-pie-chart"));
+            var pieoption = {
+                title: {
+                    text: '商店商品种类售出情况',
+                    subtext: '纯属真实',
+                    x: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    x: 'left',
+                    data: good_name
+                },
+                calculable: true,
+                series: [
+                    {
+                        name: '销售来源',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '60%'],
+                        data: servicedata
+                    }
+                ]
+            };
+            pieChart.setOption(pieoption);
+            $(window).resize(pieChart.resize);
+        })
+
+        $.getJSON("/system/report/getInventoryInfo", function (data, status) {
+            var arr = new Array();
+            arr = data;
+            var inventory_amounts = new Array(arr.length);
+            var inventory_name = new Array(arr.length);
+            var i = 0;
+            var j = 0;
+            $.each(arr, function (index1, item1) {
+                $.each(item1, function (index2, item2) {
+                    if (index2 == "amount") {
+                        inventory_amounts[i] = item2;
+                        i++;
+                    }
+                    else {
+                        inventory_name[j] = item2;
+                        j++;
+                    }
+                })
+            })
+
+            var servicedata = [];
+            for (var i = 0; i < arr.length; i++) {
+                var obj = new Object();
+                obj.name = inventory_name[i];
+                obj.value = inventory_amounts[i];
+                servicedata[i] = obj;
+            }
+
+            var pieChart = echarts.init(document.getElementById("inventory-pie-chart"));
+            var pieoption = {
+                title: {
+                    text: '商店库存商品种类储存情况',
+                    subtext: '纯属真实',
+                    x: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    x: 'left',
+                    data: inventory_name
+                },
+                calculable: true,
+                series: [
+                    {
+                        name: '库存来源',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '60%'],
+                        data: servicedata
+                    }
+                ]
+            };
+            pieChart.setOption(pieoption);
+            $(window).resize(pieChart.resize);
+        })
+
+        $.getJSON("/system/report/getEmployeesInfo", function (data, status) {
+            var arr = new Array();
+            arr = data;
+            var employees_amounts = new Array(arr.length);
+            var employees_name = new Array(arr.length);
+            var i = 0;
+            var j = 0;
+            $.each(arr, function (index1, item1) {
+                $.each(item1, function (index2, item2) {
+                    if (index2 == "amount") {
+                        employees_amounts[i] = item2;
+                        i++;
+                    }
+                    else {
+                        employees_name[j] = item2;
+                        j++;
+                    }
+                })
+            })
+
+            var servicedata = [];
+            for (var i = 0; i < arr.length; i++) {
+                var obj = new Object();
+                obj.name = employees_name[i];
+                obj.value = employees_amounts[i];
+                servicedata[i] = obj;
+            }
+
+            var pieChart = echarts.init(document.getElementById("employees-pie-chart"));
+            var pieoption = {
+                title: {
+                    text: '商店员工就职情况',
+                    subtext: '纯属真实',
+                    x: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    x: 'left',
+                    data: employees_name
+                },
+                calculable: true,
+                series: [
+                    {
+                        name: '职位来源',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '60%'],
+                        data: servicedata
+                    }
+                ]
+            };
+            pieChart.setOption(pieoption);
+            $(window).resize(pieChart.resize);
+        })
+
+        $("button").click(function () {
+            $.get("/system/report/getTotalIncome", function (data, status) {
+                $("#total_income").text(data);
+            })
+        })
+
+        $("button").click(function () {
+            $.get("/system/report/getTotalBill", function (data, status) {
+                $("#total_bill").text(data);
+            })
+        })
+
+        $("button").click(function () {
+            $.get("/system/report/getTotalGoodSold", function (data, status) {
+                $("#total_good_sold").text(data);
+            })
+        })
+
+        $("button").click(function () {
+            $.get("/system/report/getTotalGood", function (data, status) {
+                $("#total_good").text(data);
+            })
+        })
+
+        $("button").click(function () {
+            $.get("/system/report/getTotalVip", function (data, status) {
+                $("#total_vip").text(data);
+            })
+        })
+
+        $("button").click(function () {
+            $.get("/system/report/getTotalEmployee", function (data, status) {
+                $("#total_employee").text(data);
+            })
+        })
+
+    </script>
+</body>
+
+</html>
